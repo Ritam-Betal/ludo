@@ -1,0 +1,80 @@
+.board {
+    display: flex;
+    flex-direction: column;
+    margin: 20px auto;
+    width: fit-content;
+    border: 1px solid #333;
+}
+
+.board-row {
+  display: flex;
+}
+
+.board-cell {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.red-home { background-color: #f28b82; }
+.green-home { background-color: #81c995; }
+.blue-home { background-color: #aecbfa; }
+.yellow-home { background-color: #fff475; }
+.center { background-color: #e0e0e0; }
+
+.path {
+    background-color: #ffffff;
+    border: 1px solid black;
+}
+
+.red-home,
+.green-home,
+.blue-home,
+.yellow-home,
+.center {
+    border: none;
+}
+
+.red-chickstar,
+.green-chickstar,
+.blue-chickstar,
+.yellow-chickstar {
+  background-color: #fff;
+  border: 1px solid #000;
+}
+
+.token {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.token.red { background-color: red; }
+.token.green { background-color: green; }
+.token.blue { background-color: blue; }
+.token.yellow { background-color: goldenrod; }
+
+.red-chickstar {
+    background-color: #f28b82;
+    border: 1px solid black;
+}
+
+.green-chickstar {
+    background-color: #81c995;
+    border: 1px solid black;
+}
+
+.blue-chickstar {
+    background-color: #aecbfa;
+    border: 1px solid black;
+}
+
+.yellow-chickstar {
+    background-color: #fff475;
+    border: 1px solid black;
+}

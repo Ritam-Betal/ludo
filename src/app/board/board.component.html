@@ -1,0 +1,10 @@
+<div class="board">
+  <div *ngFor="let row of board" class="board-row">
+    <div *ngFor="let cell of row" class="board-cell" [ngClass]="cell.zone">
+      <div *ngFor="let token of cell.tokens" class="token" [ngClass]="token"></div>
+      <div *ngIf="cell.isChickstar" class="chickstar-icon">
+        <i class="bi bi-star-fill"></i>
+      </div>
+    </div>
+  </div>
+</div>

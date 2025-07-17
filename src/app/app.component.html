@@ -1,0 +1,9 @@
+<div class="container-fluid">
+
+
+<h1>Ludo Game</h1>
+<app-board [rolledDice]="lastDiceValue" ></app-board>
+<h4>Next Move For Player: {{ players[currentPlayerIndex] | titlecase }}</h4>
+<app-dice (diceRolled)="handleDiceRoll($event)"></app-dice>
+
+</div>
