@@ -9,50 +9,64 @@ import { BoardComponent } from './board/board.component';
 export class AppComponent {
   title = 'ludo';
   lastDiceValue: number = 0;
+
+
   players = ['red', 'green', 'yellow', 'blue'];
   currentPlayerIndex = 0;
   isWaitingForBonusRoll = false;
   consecutiveSixes = 0;
   canRoll = true;
 
+  @ViewChild(BoardComponent) boardComponent!: BoardComponent;
+
   handleDiceRoll(value: number) {
-    this.lastDiceValue = value;
-    this.canRoll = false;
+  this.lastDiceValue = value;
+  this.canRoll = false;                 
+  this.boardComponent.tokenMoved = false; 
 
-    console.log("Player: " + this.currentPlayerIndex +"&& Dice: "+this.lastDiceValue);
-    if (value === 6) {
-      this.consecutiveSixes++;
+  console.log(`Player: ${this.currentPlayerIndex} && Dice: ${this.lastDiceValue}`);
 
-      if (this.consecutiveSixes >= 3) {
+  if (value === 6) {
+    this.consecutiveSixes++;
 
-        this.consecutiveSixes = 0;
-        this.isWaitingForBonusRoll = false;
-        this.moveToNextPlayer();
-
-
-      } else { // Let player roll again (don't move to next player yet)
-        this.giveAChal(this.currentPlayerIndex, this.lastDiceValue);
-        this.isWaitingForBonusRoll = true;
-
-      }
-
-    } else {
+    if (this.consecutiveSixes >= 3) {
+      console.log('Three consecutive sixes! Turn lost.');
       this.consecutiveSixes = 0;
-      this.isWaitingForBonusRoll = false;
-      this.giveAChal(this.currentPlayerIndex, this.lastDiceValue);
+      // Skip move and go to next player directly
+      this.moveToNextPlayer();
+    } else {
+      // wait for token move, same player stays
+      console.log('Rolled a 6! Move a token and roll again.');
+    }
+
+  } else {
+    // wait for token move, next player handled in onTokenMoveDone
+    this.consecutiveSixes = 0;
+  }
+}
+
+
+  moveToNextPlayer() {
+    // only switch player if not waiting for bonus roll
+    if (!this.isWaitingForBonusRoll) {
+      this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
+      console.log(`Next player: ${this.players[this.currentPlayerIndex]}`);
+    }
+    // allow dice roll for whoever's turn it is
+    this.canRoll = true;
+  }
+
+  onTokenMoveDone() {
+    console.log('Token moved by player:', this.players[this.currentPlayerIndex]);
+
+    // After token move is done:
+    if (this.lastDiceValue === 6 && this.consecutiveSixes < 3) {
+      // Stay on same player, allow another roll
+      console.log('Rolled 6, same player rolls again');
+      this.canRoll = true;
+    } else {
+      // Normal case, go to next player
       this.moveToNextPlayer();
     }
   }
-
-  moveToNextPlayer() {
-    this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
-  }
-
-  @ViewChild(BoardComponent) boardComponent!: BoardComponent;
-  giveAChal(currentPlayerIndex: number, lastDiceValue: number) {
-    const color = this.players[currentPlayerIndex];
-    this.boardComponent.moveToken(color, lastDiceValue);
-  }
-
-
 }

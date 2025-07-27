@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 type CellType = {
   zone: string;
@@ -17,6 +17,10 @@ export class BoardComponent implements OnInit {
   board: CellType[][] = [];
 
   @Input() rolledDice: number = 0;
+  @Input() activeColor!: string;
+  @Output() tokenMoveDone = new EventEmitter<void>();
+
+
 
   constructor() { }
 
@@ -76,11 +80,11 @@ export class BoardComponent implements OnInit {
   }
 
   setTokens(tokenColor: string, positions: [number, number][]) {
-
-    positions.forEach(([row, col]) => {
-      this.board[row][col].tokens = [tokenColor];
+    positions.forEach(([row, col], index) => {
+      this.board[row][col].tokens.push(`${tokenColor}-${index}`);
     });
   }
+
 
   setChickstars(chickstars: [number, number, string?][]) {
     chickstars.forEach(([row, col, zone]) => {
@@ -144,48 +148,87 @@ export class BoardComponent implements OnInit {
   }
 
 
-  moveToken(tokenColor: string, steps: number) {
-    const path = this.getPathForColor(tokenColor);
+  moveToken(tokenId: string, steps: number) {
+    const color = tokenId.split('-')[0];
+    const path = this.getPathForColor(color);
     if (!path) return;
 
-    // find current index in path
     let currentIndex = -1;
     for (let i = 0; i < path.length; i++) {
       const [r, c] = path[i];
-      if (this.board[r][c].tokens.includes(tokenColor)) {
+      if (this.board[r][c].tokens.includes(tokenId)) {
         currentIndex = i;
         break;
       }
     }
 
-    // if token is still in home (not on path yet)
     if (currentIndex === -1) {
-      // must roll a 6 to enter
       if (steps === 6) {
+        // remove from home zone
+        for (let r = 0; r < this.gridSize; r++) {
+          for (let c = 0; c < this.gridSize; c++) {
+            const idx = this.board[r][c].tokens.indexOf(tokenId);
+            if (idx > -1) {
+              this.board[r][c].tokens.splice(idx, 1);
+              break;
+            }
+          }
+        }
+        // now place it on the start path
         const [startRow, startCol] = path[0];
-        this.board[startRow][startCol].tokens.push(tokenColor);
+        this.board[startRow][startCol].tokens.push(tokenId);
+        this.board = [...this.board];
       }
       return;
     }
 
-    // remove token from old cell
     const [oldRow, oldCol] = path[currentIndex];
-    const tokenIdx = this.board[oldRow][oldCol].tokens.indexOf(tokenColor);
-    if (tokenIdx > -1) {
-      this.board[oldRow][oldCol].tokens.splice(tokenIdx, 1);
+    const idx = this.board[oldRow][oldCol].tokens.indexOf(tokenId);
+    if (idx > -1) {
+      this.board[oldRow][oldCol].tokens.splice(idx, 1);
     }
 
     const newIndex = currentIndex + steps;
     if (newIndex >= path.length) {
-      // needs exact number to finish, so stay put
-      this.board[oldRow][oldCol].tokens.push(tokenColor);
+      this.board[oldRow][oldCol].tokens.push(tokenId);
       return;
     }
 
     const [newRow, newCol] = path[newIndex];
-    this.board[newRow][newCol].tokens.push(tokenColor);
+    this.board[newRow][newCol].tokens.push(tokenId);
   }
 
+
+  tokenMoved: boolean = false;
+
+
+  onTokenClick(tokenId: string) {
+    if (this.tokenMoved) {
+      console.warn('You have already moved a token for this dice roll!');
+      return;
+    }
+    const tokenColor = tokenId.split('-')[0];
+    if (tokenColor !== this.activeColor) {
+      console.warn(`Not ${tokenColor}'s turn! It's ${this.activeColor}'s turn.`);
+      return;
+    }
+    if (this.rolledDice === 0) {
+      console.warn('Roll the dice first!');
+      return;
+    }
+
+    this.moveToken(tokenId, this.rolledDice);
+
+    // Emit event to AppComponent after move
+    this.tokenMoveDone.emit();
+
+    // allow another move if rolledDice was 6
+    if (this.rolledDice !== 6) {
+      this.tokenMoved = true;
+    } else {
+      this.tokenMoved = false;
+    }
+  }
 
 }
 

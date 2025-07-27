@@ -13,6 +13,7 @@ export class DiceComponent implements OnInit {
 
   @Input() rolledDice: number = 0;
   @Input() currentPlayer: string = '';
+  
   @Output() tokenMoved = new EventEmitter<void>();
 
 
