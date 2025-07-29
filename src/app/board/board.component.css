@@ -48,16 +48,43 @@
 }
 
 .token {
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: 1px solid black;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border: 1.5px solid #fff;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
 }
 
-.token.red { background-color: red; }
-.token.green { background-color: green; }
-.token.blue { background-color: blue; }
-.token.yellow { background-color: goldenrod; }
+/* Add a nice glowing effect on hover */
+.token:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Red token */
+.token.red-0, .red-1, .red-2, .red-3 {
+  background: radial-gradient(circle at 30% 30%, #ff4d4d, #cc0000);
+  /* background: radial-gradient(circle at 30% 30%, #990000, #4d0000); */
+}
+
+/* Green token */
+.token.green-0, .green-1, .green-2, .green-3 {
+  background: radial-gradient(circle at 30% 30%, #66ff66, #008000);
+}
+
+/* Blue token */
+.token.blue-0, .blue-1, .blue-2, .blue-3 {
+  background: radial-gradient(circle at 30% 30%, #66b3ff, #004080);
+}
+
+/* Yellow token */
+.token.yellow-0, .yellow-1, .yellow-2, .yellow-3 {
+  background: radial-gradient(circle at 30% 30%, #ffff99, #b38600);
+}
 
 .red-chickstar {
     background-color: #f28b82;

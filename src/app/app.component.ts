@@ -20,30 +20,41 @@ export class AppComponent {
   @ViewChild(BoardComponent) boardComponent!: BoardComponent;
 
   handleDiceRoll(value: number) {
-  this.lastDiceValue = value;
-  this.canRoll = false;                 
-  this.boardComponent.tokenMoved = false; 
+    this.lastDiceValue = value;
+    this.canRoll = false;
+    this.boardComponent.tokenMoved = false;
 
-  console.log(`Player: ${this.currentPlayerIndex} && Dice: ${this.lastDiceValue}`);
+    const currentColor = this.players[this.currentPlayerIndex];
+    console.log(`Player: ${this.currentPlayerIndex} && Dice: ${this.lastDiceValue}`);
 
-  if (value === 6) {
-    this.consecutiveSixes++;
+    // Check if player has any valid move
+    const canMove = this.boardComponent.canPlayerMove(currentColor, value);
 
-    if (this.consecutiveSixes >= 3) {
-      console.log('Three consecutive sixes! Turn lost.');
+    if (!canMove) {
+      console.log(`No valid moves for ${currentColor}. Skipping turn.`);
       this.consecutiveSixes = 0;
-      // Skip move and go to next player directly
       this.moveToNextPlayer();
-    } else {
-      // wait for token move, same player stays
-      console.log('Rolled a 6! Move a token and roll again.');
+      return;
     }
 
-  } else {
-    // wait for token move, next player handled in onTokenMoveDone
-    this.consecutiveSixes = 0;
+    if (value === 6) {
+      this.consecutiveSixes++;
+
+      if (this.consecutiveSixes >= 3) {
+        console.log('Three consecutive sixes! Turn lost.');
+        this.consecutiveSixes = 0;
+        // Skip move and go to next player directly
+        this.moveToNextPlayer();
+      } else {
+        // wait for token move, same player stays
+        console.log('Rolled a 6! Move a token and roll again.');
+      }
+
+    } else {
+      // wait for token move, next player handled in onTokenMoveDone
+      this.consecutiveSixes = 0;
+    }
   }
-}
 
 
   moveToNextPlayer() {

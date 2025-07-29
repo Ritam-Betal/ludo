@@ -230,6 +230,33 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  canPlayerMove(color: string, diceValue: number): boolean {
+  const path = this.getPathForColor(color);
+  if (!path) return false;
+
+  // Check if any token is already on the path and can move
+  for (let i = 0; i < path.length; i++) {
+    const [r, c] = path[i];
+    if (this.board[r][c].tokens.some(t => t.startsWith(color))) {
+      return true;
+    }
+  }
+
+  // If no token on path, check if dice is 6 and any token is in home
+  if (diceValue === 6) {
+    for (let r = 0; r < this.gridSize; r++) {
+      for (let c = 0; c < this.gridSize; c++) {
+        if (this.board[r][c].tokens.some(t => t.startsWith(color))) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+
 }
 
 
