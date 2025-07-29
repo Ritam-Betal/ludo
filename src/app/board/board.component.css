@@ -1,9 +1,9 @@
 .board {
-    display: flex;
-    flex-direction: column;
-    margin: 20px auto;
-    width: fit-content;
-    border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  width: fit-content;
+  border: 1px solid #333;
 }
 
 .board-row {
@@ -20,15 +20,29 @@
   justify-content: center;
 }
 
-.red-home { background-color: #f28b82; }
-.green-home { background-color: #81c995; }
-.blue-home { background-color: #aecbfa; }
-.yellow-home { background-color: #fff475; }
-.center { background-color: #e0e0e0; }
+.red-home {
+  background-color: #f28b82;
+}
+
+.green-home {
+  background-color: #81c995;
+}
+
+.blue-home {
+  background-color: #aecbfa;
+}
+
+.yellow-home {
+  background-color: #fff475;
+}
+
+.center {
+  background-color: #e0e0e0;
+}
 
 .path {
-    background-color: #ffffff;
-    border: 1px solid black;
+  background-color: #ffffff;
+  border: 1px solid black;
 }
 
 .red-home,
@@ -36,7 +50,7 @@
 .blue-home,
 .yellow-home,
 .center {
-    border: none;
+  border: none;
 }
 
 .red-chickstar,
@@ -48,7 +62,7 @@
 }
 
 .token {
-  width: 24px;
+  /* width: 24px;
   height: 24px;
   border-radius: 50%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -56,7 +70,26 @@
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
   position: relative;
   z-index: 1;
-  cursor: pointer;
+  cursor: pointer; */
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 30% 30%, #cc0000, #cc0000);
+  position: relative;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  margin: 5px auto;
+  transition: transform 0.3s;
+}
+
+.token::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: white;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  border-radius: 50%;
 }
 
 /* Add a nice glowing effect on hover */
@@ -66,42 +99,54 @@
 }
 
 /* Red token */
-.token.red-0, .red-1, .red-2, .red-3 {
-  background: radial-gradient(circle at 30% 30%, #ff4d4d, #cc0000);
+.token.red-0,
+.red-1,
+.red-2,
+.red-3 {
+  background: radial-gradient(circle at 30% 30%, #cc0000, #cc0000);
   /* background: radial-gradient(circle at 30% 30%, #990000, #4d0000); */
 }
 
 /* Green token */
-.token.green-0, .green-1, .green-2, .green-3 {
-  background: radial-gradient(circle at 30% 30%, #66ff66, #008000);
+.token.green-0,
+.green-1,
+.green-2,
+.green-3 {
+  background: radial-gradient(circle at 30% 30%, #008000, #008000);
 }
 
 /* Blue token */
-.token.blue-0, .blue-1, .blue-2, .blue-3 {
-  background: radial-gradient(circle at 30% 30%, #66b3ff, #004080);
+.token.blue-0,
+.blue-1,
+.blue-2,
+.blue-3 {
+  background: radial-gradient(circle at 30% 30%, #004080, #004080);
 }
 
 /* Yellow token */
-.token.yellow-0, .yellow-1, .yellow-2, .yellow-3 {
-  background: radial-gradient(circle at 30% 30%, #ffff99, #b38600);
+.token.yellow-0,
+.yellow-1,
+.yellow-2,
+.yellow-3 {
+  background: radial-gradient(circle at 30% 30%, #b38600, #b38600);
 }
 
 .red-chickstar {
-    background-color: #f28b82;
-    border: 1px solid black;
+  background-color: #f28b82;
+  border: 1px solid black;
 }
 
 .green-chickstar {
-    background-color: #81c995;
-    border: 1px solid black;
+  background-color: #81c995;
+  border: 1px solid black;
 }
 
 .blue-chickstar {
-    background-color: #aecbfa;
-    border: 1px solid black;
+  background-color: #aecbfa;
+  border: 1px solid black;
 }
 
 .yellow-chickstar {
-    background-color: #fff475;
-    border: 1px solid black;
+  background-color: #fff475;
+  border: 1px solid black;
 }
