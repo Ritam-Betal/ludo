@@ -7,5 +7,5 @@
   ></app-board>
 
   <h4>Next Move For Player: {{ players[currentPlayerIndex] | titlecase }}</h4>
-  <app-dice (diceRolled)="handleDiceRoll($event)"></app-dice>
+  <app-dice [disabled]="!canRoll" (diceRolled)="handleDiceRoll($event)"></app-dice>
 </div>

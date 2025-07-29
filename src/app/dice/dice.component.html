@@ -2,6 +2,6 @@
   <div class="dice-display" *ngIf="diceValue">
     <i [ngClass]="getDiceIconClass()" ></i>
   </div>
-  <button class="btn btn-dark mt-2" (click)="rollDice()">Roll Dice</button>
+  <button class="btn btn-dark mt-2" (click)="rollDice()" [disabled]="disabled">Roll Dice</button>
   
 </div>
