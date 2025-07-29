@@ -94,8 +94,8 @@
 
 /* Add a nice glowing effect on hover */
 .token:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  transform: scale(1.1) rotate(-45deg);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
 /* Red token */
